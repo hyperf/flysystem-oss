@@ -98,6 +98,37 @@ class OssAdapterTest extends AbstractTestCase
         $this->assertNull($flysystem->delete('test.json'));
     }
 
+    public function testSetTimeout()
+    {
+        $container = $this->getContainer();
+        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
+            $client = Mockery::mock(OssClient::class);
+            $client->shouldReceive('setTimeout')->with(3600)->once()->andReturnNull();
+            $client->shouldReceive('setConnectTimeout')->with(10)->once()->andReturnNull();
+            return $client;
+        });
+        $adapter = new Adapter($this->getDefaultOptions());
+        new Filesystem($adapter);
+
+        $container = $this->getContainer();
+        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
+            $client = Mockery::mock(OssClient::class);
+            $client->shouldReceive('setTimeout')->with(1000)->once()->andReturnNull();
+            $client->shouldReceive('setConnectTimeout')->with(20)->once()->andReturnNull();
+            return $client;
+        });
+        $adapter = new Adapter([
+            'accessId' => 'xxx',
+            'accessSecret' => 'xxx',
+            'bucket' => $this->bucket,
+            'endpoint' => 'oss-cn-qingdao.aliyuncs.com',
+            'timeout' => 1000,
+            'connectTimeout' => 20,
+        ]);
+        new Filesystem($adapter);
+        $this->assertTrue(true);
+    }
+
     protected function getDefaultOssClient()
     {
         $client = Mockery::mock(OssClient::class);
