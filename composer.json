@@ -9,7 +9,7 @@
     "description": "",
     "autoload": {
         "psr-4": {
-            "Hyperf\\Flysystem\\Oss\\": "src/"
+            "Hyperf\\Flysystem\\OSS\\": "src/"
         }
     },
     "autoload-dev": {
@@ -42,7 +42,7 @@
     },
     "extra": {
         "hyperf": {
-            "config": "Hyperf\\Flysystem\\Oss\\ConfigProvider"
+            "config": "Hyperf\\Flysystem\\OSS\\ConfigProvider"
         }
     }
 }
