@@ -11,12 +11,7 @@ declare(strict_types=1);
  */
 namespace HyperfTest\Cases;
 
-use Hyperf\Config\Config;
-use Hyperf\Contract\ConfigInterface;
 use Hyperf\Di\Container;
-use Hyperf\Filesystem\Adapter\AliyunOssAdapterFactory;
-use Hyperf\Filesystem\FilesystemFactory;
-use Hyperf\Filesystem\Version;
 use Hyperf\Flysystem\OSS\Adapter;
 use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Codec\Json;
