@@ -20,7 +20,7 @@
     "require": {
         "php": ">=7.3",
         "aliyuncs/oss-sdk-php": "^2.4",
-        "hyperf/utils": "^2.2",
+        "hyperf/utils": "3.0.x-dev",
         "league/flysystem": "^2.1"
     },
     "require-dev": {
