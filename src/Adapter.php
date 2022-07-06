@@ -68,6 +68,11 @@ class Adapter implements FilesystemAdapter
         $this->client->setConnectTimeout($connectTimeout);
     }
 
+    public function directoryExists(string $path): bool
+    {
+        return $this->client->doesObjectExist($this->bucket, $path);
+    }
+
     public function fileExists(string $path): bool
     {
         return $this->client->doesObjectExist($this->bucket, $path);
