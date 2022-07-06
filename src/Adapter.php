@@ -159,7 +159,12 @@ class Adapter implements FilesystemAdapter
     public function fileSize(string $path): FileAttributes
     {
         $response = $this->client->getObjectMeta($this->bucket, $path);
-        return new FileAttributes($path, $response['content-length']);
+
+        $fileSize = null;
+        if (isset($response['content-length'])) {
+            $fileSize = (int) $response['content-length'];
+        }
+        return new FileAttributes($path, $fileSize);
     }
 
     public function listContents(string $path, bool $deep): iterable
