@@ -11,11 +11,11 @@ declare(strict_types=1);
  */
 namespace HyperfTest\Cases;
 
+use Hyperf\Context\ApplicationContext;
 use Hyperf\Di\Container;
 use Hyperf\Flysystem\OSS\Adapter;
-use Hyperf\Utils\ApplicationContext;
-use Hyperf\Utils\Codec\Json;
-use Hyperf\Utils\ResourceGenerator;
+use Hyperf\Codec\Json;
+use Hyperf\Support\ResourceGenerator;
 use League\Flysystem\Filesystem;
 use Mockery;
 use OSS\OssClient;

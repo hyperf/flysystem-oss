@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace Hyperf\Flysystem\OSS;
 
-use Hyperf\Utils\ResourceGenerator;
+use Hyperf\Support\ResourceGenerator;
 use League\Flysystem\Config;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemAdapter;
