@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Hyperf\Flysystem\OSS;
 
 use Hyperf\Support\ResourceGenerator;
+use JetBrains\PhpStorm\ArrayShape;
 use League\Flysystem\Config;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemAdapter;
@@ -31,19 +32,17 @@ class Adapter implements FilesystemAdapter
      */
     protected $bucket;
 
-    /**
-     * @param $config = [
-     *               'accessId' => '',
-     *               'accessSecret' => '',
-     *               'bucket' => '',
-     *               'endpoint' => '',
-     *               'timeout' => 3600,
-     *               'connectTimeout' => 10,
-     *               'isCName' => false,
-     *               'token' => '',
-     *               'proxy' => null,
-     *               ]
-     */
+    #[ArrayShape([
+        'accessId' => 'string',
+        'accessSecret' => 'string',
+        'bucket' => 'string',
+        'endpoint' => 'string',
+        'timeout' => 'int',
+        'connectTimeout' => 'int',
+        'isCName' => 'bool',
+        'token' => 'string',
+        'proxy' => 'mixed',
+    ])]
     public function __construct($config = [])
     {
         $this->bucket = $config['bucket'];
