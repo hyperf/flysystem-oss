@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace Hyperf\Flysystem\OSS;
 
 use Hyperf\Support\ResourceGenerator;
@@ -32,16 +33,16 @@ class Adapter implements FilesystemAdapter
 
     /**
      * @param $config = [
-     *     'accessId' => '',
-     *     'accessSecret' => '',
-     *     'bucket' => '',
-     *     'endpoint' => '',
-     *     'timeout' => 3600,
-     *     'connectTimeout' => 10,
-     *     'isCName' => false,
-     *     'token' => '',
-     *     'proxy' => null,
-     * ]
+     *               'accessId' => '',
+     *               'accessSecret' => '',
+     *               'bucket' => '',
+     *               'endpoint' => '',
+     *               'timeout' => 3600,
+     *               'connectTimeout' => 10,
+     *               'isCName' => false,
+     *               'token' => '',
+     *               'proxy' => null,
+     *               ]
      */
     public function __construct($config = [])
     {

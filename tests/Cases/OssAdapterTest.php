@@ -9,15 +9,15 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace HyperfTest\Cases;
 
+use Hyperf\Codec\Json;
 use Hyperf\Context\ApplicationContext;
 use Hyperf\Di\Container;
 use Hyperf\Flysystem\OSS\Adapter;
-use Hyperf\Codec\Json;
 use Hyperf\Support\ResourceGenerator;
 use League\Flysystem\Filesystem;
-use Mockery;
 use OSS\OssClient;
 
 /**
@@ -30,13 +30,13 @@ class OssAdapterTest extends AbstractTestCase
 
     protected function tearDown(): void
     {
-        Mockery::close();
+        \Mockery::close();
     }
 
     public function testWrite()
     {
         $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
+        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
             $client = $this->getDefaultOssClient();
             $client->shouldReceive('putObject')->withAnyArgs()->once()->andReturnNull();
             return $client;
@@ -49,7 +49,7 @@ class OssAdapterTest extends AbstractTestCase
     public function testFileExists()
     {
         $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
+        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
             $client = $this->getDefaultOssClient();
             $client->shouldReceive('doesObjectExist')->with($this->bucket, 'test.json')->once()->andReturnTrue();
             return $client;
@@ -62,7 +62,7 @@ class OssAdapterTest extends AbstractTestCase
     public function testWriteStream()
     {
         $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
+        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
             $client = $this->getDefaultOssClient();
             $client->shouldReceive('appendObject')->withAnyArgs()->once()->andReturnNull();
             return $client;
@@ -75,7 +75,7 @@ class OssAdapterTest extends AbstractTestCase
     public function testGetObject()
     {
         $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
+        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
             $client = $this->getDefaultOssClient();
             $client->shouldReceive('getObject')->with($this->bucket, 'test.json')->once()->andReturn('{}');
             return $client;
@@ -88,7 +88,7 @@ class OssAdapterTest extends AbstractTestCase
     public function testDelete()
     {
         $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
+        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
             $client = $this->getDefaultOssClient();
             $client->shouldReceive('deleteObject')->with($this->bucket, 'test.json')->once()->andReturnNull();
             return $client;
@@ -101,8 +101,8 @@ class OssAdapterTest extends AbstractTestCase
     public function testSetTimeout()
     {
         $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
-            $client = Mockery::mock(OssClient::class);
+        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
+            $client = \Mockery::mock(OssClient::class);
             $client->shouldReceive('setTimeout')->with(3600)->once()->andReturnNull();
             $client->shouldReceive('setConnectTimeout')->with(10)->once()->andReturnNull();
             return $client;
@@ -111,8 +111,8 @@ class OssAdapterTest extends AbstractTestCase
         new Filesystem($adapter);
 
         $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, Mockery::any())->andReturnUsing(function ($_, $args) {
-            $client = Mockery::mock(OssClient::class);
+        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
+            $client = \Mockery::mock(OssClient::class);
             $client->shouldReceive('setTimeout')->with(1000)->once()->andReturnNull();
             $client->shouldReceive('setConnectTimeout')->with(20)->once()->andReturnNull();
             return $client;
@@ -131,7 +131,7 @@ class OssAdapterTest extends AbstractTestCase
 
     protected function getDefaultOssClient()
     {
-        $client = Mockery::mock(OssClient::class);
+        $client = \Mockery::mock(OssClient::class);
         $client->shouldReceive('setTimeout')->with(3600)->andReturnNull();
         $client->shouldReceive('setConnectTimeout')->with(10)->andReturnNull();
         return $client;
@@ -149,7 +149,7 @@ class OssAdapterTest extends AbstractTestCase
 
     protected function getContainer()
     {
-        $container = Mockery::mock(Container::class);
+        $container = \Mockery::mock(Container::class);
         ApplicationContext::setContainer($container);
         return $container;
     }
