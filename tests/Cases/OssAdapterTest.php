@@ -43,7 +43,8 @@ class OssAdapterTest extends AbstractTestCase
         });
         $adapter = new Adapter($this->getDefaultOptions());
         $flysystem = new Filesystem($adapter);
-        $this->assertNull($flysystem->write('test.json', Json::encode(['id' => uniqid()])));
+        $flysystem->write('test.json', Json::encode(['id' => uniqid()]));
+        $this->assertTrue(true);
     }
 
     public function testFileExists()
@@ -69,7 +70,8 @@ class OssAdapterTest extends AbstractTestCase
         });
         $adapter = new Adapter($this->getDefaultOptions());
         $flysystem = new Filesystem($adapter);
-        $this->assertNull($flysystem->writeStream('test3.json', ResourceGenerator::from(Json::encode(['name' => uniqid()]))));
+        $flysystem->writeStream('test3.json', ResourceGenerator::from(Json::encode(['name' => uniqid()])));
+        $this->assertTrue(true);
     }
 
     public function testGetObject()
@@ -95,7 +97,8 @@ class OssAdapterTest extends AbstractTestCase
         });
         $adapter = new Adapter($this->getDefaultOptions());
         $flysystem = new Filesystem($adapter);
-        $this->assertNull($flysystem->delete('test.json'));
+        $flysystem->delete('test.json');
+        $this->assertTrue(true);
     }
 
     public function testSetTimeout()
