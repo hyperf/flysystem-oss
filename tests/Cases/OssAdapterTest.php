@@ -35,13 +35,13 @@ class OssAdapterTest extends AbstractTestCase
 
     public function testWrite()
     {
-        $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
-            $client = $this->getDefaultOssClient();
-            $client->shouldReceive('putObject')->withAnyArgs()->once()->andReturnNull();
-            return $client;
-        });
+        $client = $this->getDefaultOssClient();
+        $client->shouldReceive('putObject')->withAnyArgs()->once()->andReturnNull();
         $adapter = new Adapter($this->getDefaultOptions());
+        $ref = new \ReflectionClass($adapter);
+        $p = $ref->getProperty('client');
+        $p->setValue($adapter, $client);
+
         $flysystem = new Filesystem($adapter);
         $flysystem->write('test.json', Json::encode(['id' => uniqid()]));
         $this->assertTrue(true);
@@ -49,26 +49,26 @@ class OssAdapterTest extends AbstractTestCase
 
     public function testFileExists()
     {
-        $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
-            $client = $this->getDefaultOssClient();
-            $client->shouldReceive('doesObjectExist')->with($this->bucket, 'test.json')->once()->andReturnTrue();
-            return $client;
-        });
+        $client = $this->getDefaultOssClient();
+        $client->shouldReceive('doesObjectExist')->with($this->bucket, 'test.json')->once()->andReturnTrue();
         $adapter = new Adapter($this->getDefaultOptions());
+        $ref = new \ReflectionClass($adapter);
+        $p = $ref->getProperty('client');
+        $p->setValue($adapter, $client);
+
         $flysystem = new Filesystem($adapter);
         $this->assertTrue($flysystem->fileExists('test.json'));
     }
 
     public function testWriteStream()
     {
-        $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
-            $client = $this->getDefaultOssClient();
-            $client->shouldReceive('appendObject')->withAnyArgs()->once()->andReturnNull();
-            return $client;
-        });
+        $client = $this->getDefaultOssClient();
+        $client->shouldReceive('appendObject')->withAnyArgs()->once()->andReturnNull();
         $adapter = new Adapter($this->getDefaultOptions());
+        $ref = new \ReflectionClass($adapter);
+        $p = $ref->getProperty('client');
+        $p->setValue($adapter, $client);
+
         $flysystem = new Filesystem($adapter);
         $flysystem->writeStream('test3.json', ResourceGenerator::from(Json::encode(['name' => uniqid()])));
         $this->assertTrue(true);
@@ -76,26 +76,26 @@ class OssAdapterTest extends AbstractTestCase
 
     public function testGetObject()
     {
-        $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
-            $client = $this->getDefaultOssClient();
-            $client->shouldReceive('getObject')->with($this->bucket, 'test.json')->once()->andReturn('{}');
-            return $client;
-        });
+        $client = $this->getDefaultOssClient();
+        $client->shouldReceive('getObject')->with($this->bucket, 'test.json')->once()->andReturn('{}');
         $adapter = new Adapter($this->getDefaultOptions());
+        $ref = new \ReflectionClass($adapter);
+        $p = $ref->getProperty('client');
+        $p->setValue($adapter, $client);
+
         $flysystem = new Filesystem($adapter);
         $this->assertSame('{}', $flysystem->read('test.json'));
     }
 
     public function testDelete()
     {
-        $container = $this->getContainer();
-        $container->shouldReceive('make')->with(OssClient::class, \Mockery::any())->andReturnUsing(function ($_, $args) {
-            $client = $this->getDefaultOssClient();
-            $client->shouldReceive('deleteObject')->with($this->bucket, 'test.json')->once()->andReturnNull();
-            return $client;
-        });
+        $client = $this->getDefaultOssClient();
+        $client->shouldReceive('deleteObject')->with($this->bucket, 'test.json')->once()->andReturnNull();
         $adapter = new Adapter($this->getDefaultOptions());
+        $ref = new \ReflectionClass($adapter);
+        $p = $ref->getProperty('client');
+        $p->setValue($adapter, $client);
+
         $flysystem = new Filesystem($adapter);
         $flysystem->delete('test.json');
         $this->assertTrue(true);
