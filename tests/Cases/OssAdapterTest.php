@@ -87,6 +87,23 @@ class OssAdapterTest extends AbstractTestCase
         $this->assertSame('{}', $flysystem->read('test.json'));
     }
 
+    public function testSignUrl()
+    {
+        $client = $this->getDefaultOssClient();
+        $expiresAt = new \DateTime('+1 hour'); // 设置过期时间为1小时后
+        // 获取与当前时间的差值
+        $timeout = $expiresAt->getTimestamp() - time();
+        $client->shouldReceive('signUrl')->with($this->bucket, 'test.json', $timeout, 'GET', [])->once()->andReturn('http://example.com/test.json?token=abc123');
+
+        $adapter = new Adapter($this->getDefaultOptions());
+        $ref = new \ReflectionClass($adapter);
+        $p = $ref->getProperty('client');
+        $p->setValue($adapter, $client);
+
+        $flysystem = new Filesystem($adapter);
+        $this->assertSame('http://example.com/test.json?token=abc123', $flysystem->temporaryUrl('test.json', $expiresAt));
+    }
+
     public function testDelete()
     {
         $client = $this->getDefaultOssClient();

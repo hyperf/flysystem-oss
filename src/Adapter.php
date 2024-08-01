@@ -18,9 +18,10 @@ use League\Flysystem\Config;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\UnableToWriteFile;
+use League\Flysystem\UrlGeneration\TemporaryUrlGenerator;
 use OSS\OssClient;
 
-class Adapter implements FilesystemAdapter
+class Adapter implements FilesystemAdapter, TemporaryUrlGenerator
 {
     /**
      * @var OssClient
@@ -66,6 +67,12 @@ class Adapter implements FilesystemAdapter
 
         $this->client->setTimeout($timeout);
         $this->client->setConnectTimeout($connectTimeout);
+    }
+
+    public function temporaryUrl(string $path, \DateTimeInterface $expiresAt, Config $config): string
+    {
+        $timeout = $expiresAt->getTimestamp() - time();
+        return $this->client->signUrl($this->bucket, $path, $timeout, OssClient::OSS_HTTP_GET, $config->toArray());
     }
 
     public function directoryExists(string $path): bool
@@ -174,7 +181,7 @@ class Adapter implements FilesystemAdapter
 
     public function listContents(string $path, bool $deep): iterable
     {
-        $directory = rtrim($path, '\\/');
+        $directory = rtrim($path, '\/');
 
         $result = [];
         $nextMarker = '';
