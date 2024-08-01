@@ -87,6 +87,20 @@ class OssAdapterTest extends AbstractTestCase
         $this->assertSame('{}', $flysystem->read('test.json'));
     }
 
+    public function testSignUrl()
+    {
+        $client = $this->getDefaultOssClient();
+        $client->shouldReceive('signUrl')->with($this->bucket, 'test.json', 3600)->once()->andReturn('test');
+        $adapter = new Adapter($this->getDefaultOptions());
+        $ref = new \ReflectionClass($adapter);
+        $p = $ref->getProperty('client');
+        $p->setValue($adapter, $client);
+
+        $flysystem = new Filesystem($adapter);
+        $expiresAt = \Mockery::mock(\DateTime::class);
+        $this->assertSame('test', $flysystem->temporaryUrl('test.json', $expiresAt));
+    }
+
     public function testDelete()
     {
         $client = $this->getDefaultOssClient();
