@@ -72,7 +72,7 @@ class Adapter implements FilesystemAdapter, TemporaryUrlGenerator
     public function temporaryUrl(string $path, \DateTimeInterface $expiresAt, Config $config): string
     {
         $timeout = $expiresAt->getTimestamp() - time();
-        return $this->client->signUrl($this->bucket, $path, $timeout, OssClient::OSS_HTTP_GET, $config->toArray());
+        return $this->client->signUrl($this->bucket, $path, $timeout, $config->get('method', OssClient::OSS_HTTP_GET), $config->toArray());
     }
 
     public function directoryExists(string $path): bool
