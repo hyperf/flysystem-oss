@@ -165,7 +165,11 @@ class Adapter implements FilesystemAdapter, TemporaryUrlGenerator
     public function lastModified(string $path): FileAttributes
     {
         $response = $this->client->getObjectMeta($this->bucket, $path);
-        return new FileAttributes($path, null, null, $response['last-modified']);
+        $lastModified = null;
+        if (isset($response['last-modified'])) {
+            $lastModified = strtotime($response['last-modified']);
+        }
+        return new FileAttributes($path, null, null, $lastModified);
     }
 
     public function fileSize(string $path): FileAttributes
